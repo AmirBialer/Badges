@@ -1,13 +1,23 @@
 import pandas as pd
 import numpy as np
+import pickle
 import re
 import math
 
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 ChosenStudentList=pd.read_csv('data/ChosenList.csv')
-Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/13.05.csv')
+Date=str(17.05)
+Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/'+Date+'.csv')
 
 
+def LookingForMoodleId(x):
+    m=re.search("The user with id '(.+?)'", x)
+    if m:
+        return int(m.group(1))
+    else:
+        return int(0)
+
+Newlogs["MoodleId"]=Newlogs["Event name"].apply(lambda x: LookingForMoodleId(x))
 
 def get_deleted_object(data, object):
     deleted_objects = pd.DataFrame(columns={'object_id'})
@@ -40,7 +50,7 @@ def mark_rows(data):
     for index, row in data.iterrows():
         if (row['Component'] == 'Discussion created'):
             if not is_deleted_object(row, 'Discussion'.lower()):
-                moodle_id = re.search("The user with id '(.+?)'", row['Event name']).group(1)
+                moodle_id = row["MoodleId"]
                 postID = re.search('discussion with id (.+?) in the forum', row['Event name']).group(1)
                 Discussions=Discussions.append(row, ignore_index=True, sort=False)
                 Discussions["Description"].iloc[-1]=moodle_id
@@ -48,7 +58,7 @@ def mark_rows(data):
                 Discussions["IP address"].iloc[-1]=postID
         elif (row['Component'] == 'Post created'):
             if not is_deleted_object(row, 'Post'.lower()):
-                moodle_id = re.search("The user with id '(.+?)'", row['Event name']).group(1)
+                moodle_id = row["MoodleId"]
                 Comments = Comments.append(row, ignore_index=True, sort=False)
                 Comments["Description"].iloc[-1]=moodle_id
                 Comments["Origin"].iloc[-1]=1
@@ -68,6 +78,8 @@ def mark_rows(data):
 
 
 Discussions,Comments,PostViewCount=mark_rows(Newlogs)
+Discussions.to_pickle("Discussions.pkl")
+Comments.to_pickle("Comments.pkl")
 
 def Summarizer(UpdateData):
     sume = np.sum(UpdateData['Origin'])
@@ -185,10 +197,9 @@ def GetMaxViewsperPerson(data):
 def MakeViewsReport():
     OldFile=pd.read_csv('data/ViewsOfBadgeGroup.csv')
     OldFile.to_csv('data/ViewsOfBadgeGroupOLD.csv', encoding='utf-8-sig')
-
-
     CountViewsWithPostOwners=MatchPostToPerson(PostViewCount,Discussions)
+    CountViewsWithPostOwners.to_pickle('CountViewsWithPostOwners.pkl')
     CountViewsPerPerson=GetMaxViewsperPerson(CountViewsWithPostOwners)
     CountViewsPerPerson.to_csv('data/ViewsOfBadgeGroupNEW.csv',index=False, encoding='utf-8-sig')
 # Viewscount
-#MakeMakeViewsReport
+MakeViewsReport()
