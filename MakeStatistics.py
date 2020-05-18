@@ -11,6 +11,7 @@ import math
 import pickle
 import datetime
 from datetime import date
+#time:
 TodaysDate = date.today()
 TodaysDayNumber=TodaysDate.timetuple().tm_yday
 TodaysWeek=TodaysDate.isocalendar()[1]
@@ -19,7 +20,7 @@ StartDayNumber=StartDay.timetuple().tm_yday
 StartWeek=StartDay.isocalendar()[1]
 NumberOfDays=1+(TodaysDate - StartDay).days
 
-
+#reading:
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 Chosen=pd.read_csv('data/ChosenList.csv')
 NotChosen=pd.read_csv('data/NotChosenList.csv')
@@ -70,9 +71,9 @@ def CalcAvrageAndStd(Data):
     Stot = np.sqrt(np.sum(np.power(Atot - Data["Total"], 2)) / Data.shape[0])
     return {"Average Comments": Acom, "Average Discussions": Adis, "Average Total": Atot, "Standard Deviation Comments": Scom, "Standard Deviation Discussions": Sdis, "Standard Deviation Total": Stot}
 
-ChosenData, NotChosenData=SplitChosenAndNot(data)
-ChosenStat=CalcAvrageAndStd(ChosenData)
-NotChosenStat=CalcAvrageAndStd(NotChosenData)
+#ChosenData, NotChosenData=SplitChosenAndNot(data)
+#ChosenStat=CalcAvrageAndStd(ChosenData)
+#NotChosenStat=CalcAvrageAndStd(NotChosenData)
 
 def MakeHistogram(ChosenData,NotChosenData, object):
     ChosenData = ChosenData.fillna(0)
@@ -101,8 +102,6 @@ def MakeHistogram(ChosenData,NotChosenData, object):
 #MakeHistogram(ChosenData,NotChosenData, "Total")
 
 def getPeopleWithAtleastOne(data, object):
-    data["DiscussionBadge"] = data["DiscussionBadge"].astype(str)
-    data["CommentsBadge"] = data["CommentsBadge"].astype(str)
     data.replace(0, "")
     if (object == "Discussion"):
         data= data[data["NewPosts"].apply(lambda x: x != "" )]
@@ -112,6 +111,10 @@ def getPeopleWithAtleastOne(data, object):
         data= data[data["Comments"].apply(lambda x: x != "" )]
         data= data[data["Comments"].apply(lambda x: x != 0 )]
         return data[data["Comments"].notna()]
+    if (object == "Total"):
+        data= data[data["Total"].apply(lambda x: x != "" )]
+        data= data[data["Total"].apply(lambda x: x != 0 )]
+        return data[data["Total"].notna()]
 
 
 def GetPeopleWithBadges(data, object):
@@ -160,7 +163,7 @@ def MedianOfIntensityAndConsistency(MoodleId, object,PersonalNewLogs, NumberOfDa
     DaysDataFrame.loc[ActivitiesPerDay.index] = ActivitiesPerDay
     return WeeksDataFrame.mean()[0], DaysDataFrame.mean()[0]
 
-def GetActivitiesOfUser(MoodleId, object,PersonalNewLogs, NumberOfDays):
+def GetActivitiesOfUserCumulative(MoodleId, object,PersonalNewLogs, NumberOfDays):
     PersonalNewLogs=PersonalNewLogs[PersonalNewLogs["Component"].apply(lambda x: x==object+' created')]#only looking at created posts/discussions
     PersonalNewLogs=PersonalNewLogs.sort_values(by=["Time"])#aranging by time
     WeekMedian,DayMedian=MedianOfIntensityAndConsistency(MoodleId, object,PersonalNewLogs, NumberOfDays)
@@ -186,12 +189,36 @@ def GetActivitiesOfUser(MoodleId, object,PersonalNewLogs, NumberOfDays):
     p.Array[LastRowIndex:NumberOfDays]=p.Array[LastRowIndex]
     return p
 
+def GetActivitiesOfUserPersonal(MoodleId, object,PersonalNewLogs, NumberOfDays):
+    if (object=="Total"):
+        a=PersonalNewLogs[PersonalNewLogs["Component"].apply(lambda x: x ==  'Post created')]  # only looking at created posts/discussions
+        b=PersonalNewLogs[PersonalNewLogs["Component"].apply(lambda x: x ==  'Discussion created')]  # only looking at created posts/discussions
+        PersonalNewLogs=pd.concat([a,b])
+    else:
+        PersonalNewLogs = PersonalNewLogs[PersonalNewLogs["Component"].apply(lambda x: x == object + ' created')]  # only looking at created posts/discussions
+    PersonalNewLogs = PersonalNewLogs.sort_values(by=["Time"])  # aranging by time
+    p = PersonalActivity(MoodleId, PersonalNewLogs["User full name"].iloc[0], NumberOfDays)
+    # Making DaysArray
+    for index, row in PersonalNewLogs.iterrows():
+        RowDay = row["Time"].date()
+        RowIndex = (RowDay - StartDay).days
+        p.Array[RowIndex] += 1
+    # continuing the last activity until the end:
+    return p
+
 
 def LookForBadgeOwnersActivity(group, object,Newlogs):
     TableOfActivities= pd.DataFrame(columns={"MoodleId", "name", "Array", "Badges","BadgesDays", "BadgeIndex", "DaysMedian", "WeeksMedian"})
     for index, row in group.iterrows():
-        h=GetActivitiesOfUser(row["MoodleId"],object,Newlogs[Newlogs["MoodleId"].apply(lambda x: x==row["MoodleId"])],NumberOfDays)
+        h=GetActivitiesOfUserCumulative(row["MoodleId"],object,Newlogs[Newlogs["MoodleId"].apply(lambda x: x==row["MoodleId"])],NumberOfDays)
         TableOfActivities =TableOfActivities.append({"MoodleId": h.MoodleId, "name": h.name, "Array": h.Array, "Badges": h.Badges, "BadgesDays": h.BadgeDays, "BadgeIndex": h.BadgeIndex, "DaysMedian": h.DayMedian, "WeeksMedian": h.WeekMedian}, ignore_index=True, sort=False)
+    return TableOfActivities
+
+def LookForBadgeOwnersActivityPersonal(group, object,Newlogs):
+    TableOfActivities= pd.DataFrame(columns={"MoodleId", "name", "Array"})
+    for index, row in group.iterrows():
+        h=GetActivitiesOfUserPersonal(row["MoodleId"],object,Newlogs[Newlogs["MoodleId"].apply(lambda x: x==row["MoodleId"])],NumberOfDays)
+        TableOfActivities =TableOfActivities.append({"MoodleId": h.MoodleId, "name": h.name, "Array": h.Array}, ignore_index=True, sort=False)
     return TableOfActivities
 
 def NormalizeByFirstBadge(table,DaysBefore,DaysAfter):
@@ -256,20 +283,23 @@ def MakeFigure4(table, object):
     plt.savefig('graphs/' + object + 'Graph4.png')
     plt.show()
 
-def MakeNicksGraph():
-    ChosenGroupidx = table["MoodleId"].apply(lambda x: (x == Chosen["MoodleId"]).any(axis=0))
+def MakeNicksGraph(object):
+    Users=getPeopleWithAtleastOne(data,object)
+    UsersActivities=LookForBadgeOwnersActivityPersonal(Users, object, Newlogs)
+    UsersActivities.to_pickle('UsersActivities'+object+'.pkl')
+    #UsersActivities=pd.read_pickle('UsersActivities' + object + '.pkl')
+    print(UsersActivities.loc[0].Array.shape)
+    ChosenGroupidx = UsersActivities["MoodleId"].apply(lambda x: (x == Chosen["MoodleId"]).any(axis=0))
     NumberOfChosen = np.sum(ChosenGroupidx)
-    NotChosenGroupidx = table["MoodleId"].apply(lambda x: (x == NotChosen["MoodleId"]).any(axis=0))
+    NotChosenGroupidx = UsersActivities["MoodleId"].apply(lambda x: (x == NotChosen["MoodleId"]).any(axis=0))
     NumberOfControl = np.sum(NotChosenGroupidx)
-    xChosen = table.loc[ChosenGroupidx, "WeeksMedian"]
-    yChosen = table.loc[ChosenGroupidx, "DaysMedian"]
-    xNotChosen = table.loc[NotChosenGroupidx, "WeeksMedian"]
-    yNotChosen = table.loc[NotChosenGroupidx, "DaysMedian"]
-    plt.scatter(xChosen, yChosen, label="Badge Group")
-    plt.scatter(xNotChosen, yNotChosen, label="Control Group")
-    plt.xlabel("Consistency (Days of Work per Week) on " + object + "s")
-    plt.ylabel("Intensity (edits/working day)")
-    plt.title("Intensity/Consistency graph for " + object + " activity")
+    x =np.arange(len(UsersActivities.loc[0,"Array"]))
+    yChosen = UsersActivities.loc[ChosenGroupidx, "Array"].mean(axis=0)
+    yNotChosen = UsersActivities.loc[NotChosenGroupidx, "Array"].mean(axis=0)
+    plt.plot(x, yChosen, label="Badge Group With at Least 1 activity")
+    plt.plot(x, yNotChosen, label="Control Group With at Least 1 activity")
+    plt.xlabel("Days since the begining of the semester")
+    plt.ylabel("Average Number of activities on " + object + "s")
     plt.legend()
     plt.savefig('graphs/' + object + 'DailyActivity.png')
     plt.show()
@@ -294,6 +324,10 @@ print("Saved!")
 #PeopleWithActivity1=pd.read_pickle("PeopleWithActivity1.pkl")
 MakeFigure4(PeopleWithActivity1,"Post")
 """
+
+
+#MakeNicksGraph:
+MakeNicksGraph("Total")
 
 
 
