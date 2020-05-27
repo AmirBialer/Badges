@@ -6,7 +6,7 @@ import math
 
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 ChosenStudentList=pd.read_csv('data/ChosenList.csv')
-Date=str(17.05)
+Date="27.05"
 Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/'+Date+'.csv')
 
 
@@ -77,9 +77,13 @@ def mark_rows(data):
     return Discussions.rename(columns={"IP address": "PostID"}),Comments,PostViewCount
 
 
-Discussions,Comments,PostViewCount=mark_rows(Newlogs)
-Discussions.to_pickle("Discussions.pkl")
-Comments.to_pickle("Comments.pkl")
+#Discussions,Comments,PostViewCount=mark_rows(Newlogs)
+#Discussions.to_pickle("Discussions.pkl")
+#Comments.to_pickle("Comments.pkl")
+#PostViewCount.to_pickle("views.pkl")
+Discussions=pd.read_pickle("Discussions.pkl")
+Comments=pd.read_pickle("Comments.pkl")
+PostViewCount=pd.read_pickle("views.pkl")
 
 def Summarizer(UpdateData):
     sume = np.sum(UpdateData['Origin'])
@@ -154,7 +158,7 @@ def MakeCommentsReport(UsersWithId):
     ChosenStudents = ChosenStudents[["id", "name", "NewPosts", "DiscussionBadge", "Comments", "CommentsBadge"]]
     ChosenStudents.to_csv('data/ChosenStudentsStatusNEW.csv', index=False, encoding='utf-8-sig')
 
-MakeCommentsReport(UsersWithId)
+#MakeCommentsReport(UsersWithId)
 
 
 
@@ -202,4 +206,10 @@ def MakeViewsReport():
     CountViewsPerPerson=GetMaxViewsperPerson(CountViewsWithPostOwners)
     CountViewsPerPerson.to_csv('data/ViewsOfBadgeGroupNEW.csv',index=False, encoding='utf-8-sig')
 # Viewscount
-MakeViewsReport()
+#MakeViewsReport()
+
+
+def FindPopularViewsLink(PostViewCount, NumberFfPosts):
+    print(PostViewCount.sort_values(["count"], ascending=False).head(NumberFfPosts))
+
+FindPopularViewsLink(PostViewCount,10)

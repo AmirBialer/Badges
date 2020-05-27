@@ -24,7 +24,7 @@ NumberOfDays=1+(TodaysDate - StartDay).days
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 Chosen=pd.read_csv('data/ChosenList.csv')
 NotChosen=pd.read_csv('data/NotChosenList.csv')
-Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/17.05.csv')
+Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/27.05.csv')# change everytime
 Newlogs['Time'] = pd.to_datetime(Newlogs['Time'], format="%d/%m/%y, %H:%M")
 data=pd.read_csv('data/allStudentsStatus.csv')
 data["NewPosts"]=pd.to_numeric(data["NewPosts"], downcast="float")
@@ -69,11 +69,12 @@ def CalcAvrageAndStd(Data):
     Scom=np.sqrt(np.sum(np.power(Acom-Data["Comments"],2))/Data.shape[0])
     Sdis = np.sqrt(np.sum(np.power(Adis - Data["NewPosts"], 2)) /Data.shape[0])
     Stot = np.sqrt(np.sum(np.power(Atot - Data["Total"], 2)) / Data.shape[0])
-    return {"Average Comments": Acom, "Average Discussions": Adis, "Average Total": Atot, "Standard Deviation Comments": Scom, "Standard Deviation Discussions": Sdis, "Standard Deviation Total": Stot}
+    return pd.DataFrame(pd.Series({"Average Comments": Acom, "Average Discussions": Adis, "Average Total": Atot, "Standard Deviation Comments": Scom, "Standard Deviation Discussions": Sdis, "Standard Deviation Total": Stot}))
 
-#ChosenData, NotChosenData=SplitChosenAndNot(data)
-#ChosenStat=CalcAvrageAndStd(ChosenData)
-#NotChosenStat=CalcAvrageAndStd(NotChosenData)
+#statistics
+
+
+
 
 def MakeHistogram(ChosenData,NotChosenData, object):
     ChosenData = ChosenData.fillna(0)
@@ -96,10 +97,18 @@ def MakeHistogram(ChosenData,NotChosenData, object):
     plt.show()
 
 
+def MakeStatisticsAndHistogram():
+    ChosenData, NotChosenData=SplitChosenAndNot(data)
+    ChosenStat=CalcAvrageAndStd(ChosenData)
+    ChosenStat.to_csv("data/ChosenStatistics.csv", encoding='utf-8-sig')
+    NotChosenStat=CalcAvrageAndStd(NotChosenData)
+    NotChosenStat.to_csv("data/ControlStatistics.csv", encoding='utf-8-sig')
+    MakeHistogram(ChosenData, NotChosenData, "Comments")
+    MakeHistogram(ChosenData, NotChosenData, "NewPosts")
+    MakeHistogram(ChosenData, NotChosenData, "Total")
 
-#MakeHistogram(ChosenData,NotChosenData, "Comments")
-#MakeHistogram(ChosenData,NotChosenData, "NewPosts")
-#MakeHistogram(ChosenData,NotChosenData, "Total")
+#MakeStatisticsAndHistogram()
+
 
 def getPeopleWithAtleastOne(data, object):
     data.replace(0, "")
@@ -233,19 +242,22 @@ def NormalizeByFirstBadge(table,DaysBefore,DaysAfter):
     DaysTable["MoodleId"]=MoodleIdColumn
     return DaysTable
 
-def MakeFigure3(table,DaysBefore,DaysAfter, object):
-    # PeopleWithCommentsBadge=GetPeopleWithBadges(data,"Post")
-    # PeopleWithCommentsBadge_Activities=LookForBadgeOwnersActivity(PeopleWithCommentsBadge, "Post", Newlogs)
-    # PeopleWithCommentsBadge_Activities.to_pickle('PeopleWithCommentsBadge_Activities.pkl')
-
-    # PeopleWithDiscussionBadge=GetPeopleWithBadges(data,"Discussion")
-    # PeopleWithDiscussionBadge_Activities =LookForBadgeOwnersActivity(PeopleWithDiscussionBadge, "Discussion", Newlogs)
-    # PeopleWithDiscussionBadge_Activities.to_pickle('PeopleWithDiscussionBadge_Activities.pkl')
-    # PeopleWithDiscussionBadge_Activities=pd.read_pickle('PeopleWithDiscussionBadge_Activities.pkl')
+def MakeFigure3(object):
+    if (object=="Post"):
+        PeopleWithCommentsBadge=GetPeopleWithBadges(data,"Post")
+        PeopleWithCommentsBadge_Activities=LookForBadgeOwnersActivity(PeopleWithCommentsBadge, "Post", Newlogs)
+        PeopleWithCommentsBadge_Activities.to_pickle('PeopleWithCommentsBadge_Activities.pkl')
+        h=PeopleWithCommentsBadge_Activities
+    elif (object=="Discussion"):
+        PeopleWithDiscussionBadge=GetPeopleWithBadges(data,"Discussion")
+        PeopleWithDiscussionBadge_Activities =LookForBadgeOwnersActivity(PeopleWithDiscussionBadge, "Discussion", Newlogs)
+        PeopleWithDiscussionBadge_Activities.to_pickle('PeopleWithDiscussionBadge_Activities.pkl')
+        #PeopleWithDiscussionBadge_Activities=pd.read_pickle('PeopleWithDiscussionBadge_Activities.pkl')
+        h=PeopleWithDiscussionBadge_Activities
 
     DaysBefore = 10
     DaysAfter = 4
-    DaysTable = NormalizeByFirstBadge(PeopleWithDiscussionBadge_Activities, DaysBefore, DaysAfter)
+    table = NormalizeByFirstBadge(h, DaysBefore, DaysAfter)
     ChosenGroupidx=table["MoodleId"].apply(lambda x: (x==Chosen["MoodleId"]).any(axis=0))
     NumberOfChosen=np.sum(ChosenGroupidx)
     NotChosenGroupidx = table["MoodleId"].apply(lambda x: (x == NotChosen["MoodleId"]).any(axis=0))
@@ -308,7 +320,7 @@ def MakeNicksGraph(object):
 
 #Make Figure 3
 
-#MakeFigure3(DaysTable,DaysBefore, DaysAfter, "Discussion")
+#MakeFigure3("Discussion ")
 
 
 """
@@ -327,7 +339,7 @@ MakeFigure4(PeopleWithActivity1,"Post")
 
 
 #MakeNicksGraph:
-MakeNicksGraph("Total")
+MakeNicksGraph("Post")
 
 
 
