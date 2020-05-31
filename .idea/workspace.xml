@@ -12,22 +12,21 @@
       <change beforePath="$PROJECT_DIR$/PeopleWithDiscussionBadge_Activities.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/PeopleWithDiscussionBadge_Activities.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UsersActivitiesDiscussion.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/UsersActivitiesDiscussion.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/UsersActivitiesPost.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/UsersActivitiesPost.pkl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/UsersActivitiesTotal.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/UsersActivitiesTotal.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/ChosenStudentsStatusNEW.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/ChosenStudentsStatusNEW.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/DeletedPosts.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/DeletedPosts.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/ControlStatistics.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/ControlStatistics.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/ViewsOfBadgeGroupNEW.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/ViewsOfBadgeGroupNEW.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/allStudentsStatus.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/allStudentsStatus.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/chosenStatistics.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/chosenStatistics.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphs/DiscussionBadgeAnalysis.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/DiscussionBadgeAnalysis.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/DiscussionDailyActivity.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/DiscussionDailyActivity.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/PostBadgeAnalysis.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/PostBadgeAnalysis.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/PostDailyActivity.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/PostDailyActivity.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphs/PostGraph4.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/TotalDailyActivity.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/TotalDailyActivity.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphs/histogramComments.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramComments.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/histogramNewPosts.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramNewPosts.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graphs/histogramNormalizedComments.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramNormalizedComments.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/histogramNormalizedNewPosts.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramNormalizedNewPosts.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/histogramNormalizedTotal.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramNormalizedTotal.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graphs/histogramTotal.png" beforeDir="false" afterPath="$PROJECT_DIR$/graphs/histogramTotal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/views.pkl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +55,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.InitialCourse">
+  <component name="RunManager" selected="Python.MakeStatistics">
     <configuration name="203837695_305715781" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="My_Badges" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -257,8 +256,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.InitialCourse" />
         <item itemvalue="Python.MakeStatistics" />
+        <item itemvalue="Python.InitialCourse" />
         <item itemvalue="Python.203837695_305715781" />
         <item itemvalue="Python.IFN" />
       </list>
@@ -290,7 +289,8 @@
       <workItem from="1590050297806" duration="4236000" />
       <workItem from="1590302777333" duration="118000" />
       <workItem from="1590302898566" duration="4102000" />
-      <workItem from="1590477139081" duration="8870000" />
+      <workItem from="1590477139081" duration="9103000" />
+      <workItem from="1590907284370" duration="5349000" />
     </task>
     <servers />
   </component>
@@ -330,38 +330,38 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1590302895147" />
-    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1590586602173">
+    <state width="1323" height="223" key="GridCell.Tab.0.bottom" timestamp="1590913118491">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590586602173" />
-    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1590586602173">
+    <state width="1323" height="223" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590913118491" />
+    <state width="1323" height="223" key="GridCell.Tab.0.center" timestamp="1590913118491">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590586602173" />
-    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1590586602173">
+    <state width="1323" height="223" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590913118491" />
+    <state width="1323" height="223" key="GridCell.Tab.0.left" timestamp="1590913118491">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590586602173" />
-    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1590586602173">
+    <state width="1323" height="223" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590913118491" />
+    <state width="1323" height="223" key="GridCell.Tab.0.right" timestamp="1590913118491">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590586602173" />
-    <state width="1323" height="223" key="GridCell.Tab.1.bottom" timestamp="1590307087669">
+    <state width="1323" height="223" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590913118491" />
+    <state width="1323" height="223" key="GridCell.Tab.1.bottom" timestamp="1590913118492">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590307087669" />
-    <state width="1323" height="223" key="GridCell.Tab.1.center" timestamp="1590307087669">
+    <state width="1323" height="223" key="GridCell.Tab.1.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590913118492" />
+    <state width="1323" height="223" key="GridCell.Tab.1.center" timestamp="1590913118492">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1590307087669" />
-    <state width="1323" height="223" key="GridCell.Tab.1.left" timestamp="1590307087669">
+    <state width="1323" height="223" key="GridCell.Tab.1.center/0.0.1366.728@0.0.1366.728" timestamp="1590913118492" />
+    <state width="1323" height="223" key="GridCell.Tab.1.left" timestamp="1590913118491">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1590307087669" />
-    <state width="1323" height="223" key="GridCell.Tab.1.right" timestamp="1590307087669">
+    <state width="1323" height="223" key="GridCell.Tab.1.left/0.0.1366.728@0.0.1366.728" timestamp="1590913118491" />
+    <state width="1323" height="223" key="GridCell.Tab.1.right" timestamp="1590913118492">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1590307087669" />
+    <state width="1323" height="223" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1590913118492" />
     <state width="691" height="372" key="XDebugger.FullValuePopup" timestamp="1589980575460">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -416,13 +416,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/MakeStatistics.py</url>
-          <line>260</line>
+          <line>262</line>
           <option name="timeStamp" value="188" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/InitialCourse.py</url>
           <line>212</line>
           <option name="timeStamp" value="189" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/MakeStatistics.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="190" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -437,8 +442,8 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/My_Badges$BCS9.coverage" NAME="BCS9 Coverage Results" MODIFIED="1588696333074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
     <SUITE FILE_PATH="coverage/My_Badges$IFN.coverage" NAME="IFN Coverage Results" MODIFIED="1590052899033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../BI" />
-    <SUITE FILE_PATH="coverage/My_Badges$InitialCourse.coverage" NAME="InitialCourse Coverage Results" MODIFIED="1590586602155" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/My_Badges$MakeStatistics.coverage" NAME="MakeStatistics Coverage Results" MODIFIED="1590581572984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Badges$InitialCourse.coverage" NAME="InitialCourse Coverage Results" MODIFIED="1590907522030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/My_Badges$MakeStatistics.coverage" NAME="MakeStatistics Coverage Results" MODIFIED="1590912976152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Badges$Stam.coverage" NAME="Stam Coverage Results" MODIFIED="1588695082576" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/My_Badges$all_together.coverage" NAME="all together Coverage Results" MODIFIED="1588697470629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Downloads" />
     <SUITE FILE_PATH="coverage/My_Badges$InitialViews.coverage" NAME="InitialViews Coverage Results" MODIFIED="1589354404347" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

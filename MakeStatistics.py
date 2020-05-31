@@ -16,6 +16,8 @@ TodaysDate = date.today()
 TodaysDayNumber=TodaysDate.timetuple().tm_yday
 TodaysWeek=TodaysDate.isocalendar()[1]
 StartDay=date(2020, 3, 8)
+midtermDate=date(2020,5,15)
+midtermDay=(midtermDate-StartDay).days
 StartDayNumber=StartDay.timetuple().tm_yday
 StartWeek=StartDay.isocalendar()[1]
 NumberOfDays=1+(TodaysDate - StartDay).days
@@ -297,10 +299,9 @@ def MakeFigure4(table, object):
 
 def MakeNicksGraph(object):
     Users=getPeopleWithAtleastOne(data,object)
-    UsersActivities=LookForBadgeOwnersActivityPersonal(Users, object, Newlogs)
-    UsersActivities.to_pickle('UsersActivities'+object+'.pkl')
-    #UsersActivities=pd.read_pickle('UsersActivities' + object + '.pkl')
-    print(UsersActivities.loc[0].Array.shape)
+    #UsersActivities=LookForBadgeOwnersActivityPersonal(Users, object, Newlogs)
+    #UsersActivities.to_pickle('UsersActivities'+object+'.pkl')
+    UsersActivities=pd.read_pickle('UsersActivities' + object + '.pkl')
     ChosenGroupidx = UsersActivities["MoodleId"].apply(lambda x: (x == Chosen["MoodleId"]).any(axis=0))
     NumberOfChosen = np.sum(ChosenGroupidx)
     NotChosenGroupidx = UsersActivities["MoodleId"].apply(lambda x: (x == NotChosen["MoodleId"]).any(axis=0))
@@ -308,19 +309,33 @@ def MakeNicksGraph(object):
     x =np.arange(len(UsersActivities.loc[0,"Array"]))
     yChosen = UsersActivities.loc[ChosenGroupidx, "Array"].mean(axis=0)
     yNotChosen = UsersActivities.loc[NotChosenGroupidx, "Array"].mean(axis=0)
-    plt.plot(x, yChosen, label="Badge Group With at Least 1 activity")
-    plt.plot(x, yNotChosen, label="Control Group With at Least 1 activity")
+    fig, ax=plt.subplots(1,1)
+    ax.plot(x, yChosen, label="Badge Group With at Least 1 activity")
+    ax.plot(x, yNotChosen, label="Control Group With at Least 1 activity")
+    xt = ax.get_xticks()
+    xt = np.append(xt, midtermDay)
+    ind=np.where(xt==60)
+    xt=np.delete(xt,ind)
+    ind = np.where(xt == 70)
+    xt = np.delete(xt, ind)
+    xtl = xt.tolist()
+    xtl[-1] = "Midterm"
+    ax.set_xticks(xt)
+    ax.set_xticklabels(xtl)
     plt.xlabel("Days since the begining of the semester")
     plt.ylabel("Average Number of activities on " + object + "s")
     plt.legend()
-    plt.savefig('graphs/' + object + 'DailyActivity.png')
-    plt.show()
+    fig.savefig('graphs/' + object + 'DailyActivity.png')
+    fig.show()
 
 
 
 #Make Figure 3
 
-#MakeFigure3("Discussion ")
+#MakeFigure3("Discussion")
+#MakeFigure3("Post")
+
+
 
 
 """
@@ -339,7 +354,11 @@ MakeFigure4(PeopleWithActivity1,"Post")
 
 
 #MakeNicksGraph:
-MakeNicksGraph("Post")
+#MakeNicksGraph("Post")
+#MakeNicksGraph("Discussion")
+MakeNicksGraph("Total")
+
+
 
 
 

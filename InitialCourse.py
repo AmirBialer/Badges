@@ -6,7 +6,7 @@ import math
 
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 ChosenStudentList=pd.read_csv('data/ChosenList.csv')
-Date="27.05"
+Date="31.05"
 Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/'+Date+'.csv')
 
 
@@ -77,13 +77,13 @@ def mark_rows(data):
     return Discussions.rename(columns={"IP address": "PostID"}),Comments,PostViewCount
 
 
-#Discussions,Comments,PostViewCount=mark_rows(Newlogs)
-#Discussions.to_pickle("Discussions.pkl")
-#Comments.to_pickle("Comments.pkl")
-#PostViewCount.to_pickle("views.pkl")
-Discussions=pd.read_pickle("Discussions.pkl")
-Comments=pd.read_pickle("Comments.pkl")
-PostViewCount=pd.read_pickle("views.pkl")
+Discussions,Comments,PostViewCount=mark_rows(Newlogs)
+Discussions.to_pickle("Discussions.pkl")
+Comments.to_pickle("Comments.pkl")
+PostViewCount.to_pickle("views.pkl")
+#Discussions=pd.read_pickle("Discussions.pkl")
+#Comments=pd.read_pickle("Comments.pkl")
+#PostViewCount=pd.read_pickle("views.pkl")
 
 def Summarizer(UpdateData):
     sume = np.sum(UpdateData['Origin'])
@@ -97,7 +97,7 @@ def GetDisBadges(UpdateData_discussions):
         elif (row['NewPosts']>20):
             UpdateData_discussions.loc[index,'DiscussionBadge']='curious'
         elif (row['NewPosts'] > 5):
-            UpdateData_discussions.loc[index, 'DiscussionBadge'] = 'inquisitive'
+            UpdateData_discussions.loc[index, 'DiscussionBadge'] = 'מעניין'
     return UpdateData_discussions
 
 def GetComBadges(UpdateData_comments):
@@ -105,9 +105,9 @@ def GetComBadges(UpdateData_comments):
         if (row['Comments']>50):
             UpdateData_comments.loc[index,'CommentsBadge']='Guro'
         elif (row['Comments']>30):
-            UpdateData_comments.loc[index,'CommentsBadge']='Champion'
+            UpdateData_comments.loc[index,'CommentsBadge']='אלוף'
         elif (row['Comments'] > 8):
-            UpdateData_comments.loc[index, 'CommentsBadge'] = 'Hero'
+            UpdateData_comments.loc[index, 'CommentsBadge'] = 'גיבור'
     return UpdateData_comments
 
 
@@ -158,7 +158,7 @@ def MakeCommentsReport(UsersWithId):
     ChosenStudents = ChosenStudents[["id", "name", "NewPosts", "DiscussionBadge", "Comments", "CommentsBadge"]]
     ChosenStudents.to_csv('data/ChosenStudentsStatusNEW.csv', index=False, encoding='utf-8-sig')
 
-#MakeCommentsReport(UsersWithId)
+MakeCommentsReport(UsersWithId)
 
 
 
@@ -187,9 +187,9 @@ def GetMaxViewsperPerson(data):
             if (maxViews>250):
                 badge='important'
             elif(maxViews>150):
-                badge='popular'
+                badge='הודעה פופולרית'
             elif(maxViews>100):
-                badge='famous'
+                badge='הודעה חשובה'
             ViewsPerPerson=ViewsPerPerson.append(pd.Series([row['name'],row['id'],maxViews,badge],index=ViewsPerPerson.columns), ignore_index=True)
         else:
             ViewsPerPerson=ViewsPerPerson.append(pd.Series([row['name'],row['id'],0,''],index=ViewsPerPerson.columns), ignore_index=True)
@@ -206,7 +206,7 @@ def MakeViewsReport():
     CountViewsPerPerson=GetMaxViewsperPerson(CountViewsWithPostOwners)
     CountViewsPerPerson.to_csv('data/ViewsOfBadgeGroupNEW.csv',index=False, encoding='utf-8-sig')
 # Viewscount
-#MakeViewsReport()
+MakeViewsReport()
 
 
 def FindPopularViewsLink(PostViewCount, NumberFfPosts):
