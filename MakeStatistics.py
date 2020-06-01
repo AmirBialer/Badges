@@ -29,6 +29,7 @@ NotChosen=pd.read_csv('data/NotChosenList.csv')
 Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/27.05.csv')# change everytime
 Newlogs['Time'] = pd.to_datetime(Newlogs['Time'], format="%d/%m/%y, %H:%M")
 data=pd.read_csv('data/allStudentsStatus.csv')
+grades=pd.read_csv("data/midterm.csv")
 data["NewPosts"]=pd.to_numeric(data["NewPosts"], downcast="float")
 data["Comments"]=pd.to_numeric(data["Comments"], downcast="float")
 
@@ -73,7 +74,6 @@ def CalcAvrageAndStd(Data):
     Stot = np.sqrt(np.sum(np.power(Atot - Data["Total"], 2)) / Data.shape[0])
     return pd.DataFrame(pd.Series({"Average Comments": Acom, "Average Discussions": Adis, "Average Total": Atot, "Standard Deviation Comments": Scom, "Standard Deviation Discussions": Sdis, "Standard Deviation Total": Stot}))
 
-#statistics
 
 
 
@@ -109,7 +109,6 @@ def MakeStatisticsAndHistogram():
     MakeHistogram(ChosenData, NotChosenData, "NewPosts")
     MakeHistogram(ChosenData, NotChosenData, "Total")
 
-#MakeStatisticsAndHistogram()
 
 
 def getPeopleWithAtleastOne(data, object):
@@ -330,12 +329,6 @@ def MakeNicksGraph(object):
 
 
 
-#Make Figure 3
-
-#MakeFigure3("Discussion")
-#MakeFigure3("Post")
-
-
 
 
 """
@@ -353,10 +346,14 @@ MakeFigure4(PeopleWithActivity1,"Post")
 """
 
 
-#MakeNicksGraph:
+#MakeFigure3("Discussion")
+#MakeFigure3("Post")
+
 #MakeNicksGraph("Post")
 #MakeNicksGraph("Discussion")
-MakeNicksGraph("Total")
+#MakeNicksGraph("Total")
+
+#MakeStatisticsAndHistogram()
 
 
 
