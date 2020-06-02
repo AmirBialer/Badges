@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3c072b60-ac2a-4d3e-aa31-729577a1841a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/AnalyzingGrades.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MakeStatistics.py" beforeDir="false" afterPath="$PROJECT_DIR$/MakeStatistics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/NotChosenStudentsWithId.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/NotChosenStudentsWithId.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnalyzingGrades.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/AnalyzingGrades.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Stam.py" beforeDir="false" afterPath="$PROJECT_DIR$/Stam.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -295,6 +293,7 @@
       <workItem from="1590907284370" duration="5349000" />
       <workItem from="1590917364480" duration="593000" />
       <workItem from="1591003030953" duration="10675000" />
+      <workItem from="1591103973399" duration="243000" />
     </task>
     <servers />
   </component>
