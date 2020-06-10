@@ -18,6 +18,7 @@ TodaysWeek=TodaysDate.isocalendar()[1]
 StartDay=date(2020, 3, 8)
 midtermDate=date(2020,5,15)
 midtermDay=(midtermDate-StartDay).days
+BonusAnnouncementDay=28
 StartDayNumber=StartDay.timetuple().tm_yday
 StartWeek=StartDay.isocalendar()[1]
 NumberOfDays=1+(TodaysDate - StartDay).days
@@ -26,7 +27,7 @@ NumberOfDays=1+(TodaysDate - StartDay).days
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 Chosen=pd.read_csv('data/ChosenList.csv')
 NotChosen=pd.read_csv('data/NotChosenList.csv')
-Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/27.05.csv')# change everytime
+Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/07.06.csv')# change everytime
 Newlogs['Time'] = pd.to_datetime(Newlogs['Time'], format="%d/%m/%y, %H:%M")
 data=pd.read_csv('data/allStudentsStatus.csv')
 grades=pd.read_csv("data/midterm.csv")
@@ -349,11 +350,11 @@ MakeFigure4(PeopleWithActivity1,"Post")
 #MakeFigure3("Discussion")
 #MakeFigure3("Post")
 
-#MakeNicksGraph("Post")
-#MakeNicksGraph("Discussion")
-#MakeNicksGraph("Total")
+MakeNicksGraph("Post")
+MakeNicksGraph("Discussion")
+MakeNicksGraph("Total")
 
-#MakeStatisticsAndHistogram()
+MakeStatisticsAndHistogram()
 
 
 

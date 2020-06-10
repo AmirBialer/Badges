@@ -6,7 +6,7 @@ import math
 
 UsersWithId = pd.read_csv('data/NameIdAndMoodleId.csv')
 ChosenStudentList=pd.read_csv('data/ChosenList.csv')
-Date="03.06"
+Date="10.06"
 Newlogs=pd.read_csv('C:/Users/Amir/PycharmProjects/My_Badges/data/'+Date+'.csv')
 
 
@@ -27,6 +27,8 @@ def get_deleted_object(data, object):
             if object_id:
                 found = object_id.group(1)
                 deleted_objects = deleted_objects.append({'object_id': found}, ignore_index=True)
+            else:
+                print("strangeDeleted")
     return deleted_objects
 
 
@@ -34,14 +36,15 @@ DeletedDiscussions = get_deleted_object(Newlogs, 'Discussion')
 DeletedComments = get_deleted_object(Newlogs,'Post')
 DeletedDiscussions.to_csv('data/DeletedPosts.csv', encoding='utf-8-sig')
 
-def is_deleted_object(row, object):
-    object_id = re.search('has created the ' + object + ' with id (.+?) in', row['Event name'])
+def is_deleted_object(object_id, object):
     if object_id:
         found = object_id.group(1)
-        if object == 'Post' :
+        if object == 'post':
             return pd.Series(DeletedComments['object_id']).str.contains(found, regex=False).any()
-        else:
+        elif object == 'discussion':
             return pd.Series(DeletedDiscussions['object_id']).str.contains(found, regex=False).any()
+        else:
+            print("strangeDeleted")
 
 
 def mark_rows(data):
@@ -49,7 +52,8 @@ def mark_rows(data):
     PostViewCount = pd.DataFrame(columns = ['PostID', 'count'])
     for index, row in data.iterrows():
         if (row['Component'] == 'Discussion created'):
-            if not is_deleted_object(row, 'Discussion'.lower()):
+            object_id = re.search('has created the ' + "discussion" + ' with id (.+?) in', row['Event name'])
+            if not is_deleted_object(object_id, "discussion"):
                 moodle_id = row["MoodleId"]
                 postID = re.search('discussion with id (.+?) in the forum', row['Event name']).group(1)
                 Discussions=Discussions.append(row, ignore_index=True, sort=False)
@@ -57,15 +61,17 @@ def mark_rows(data):
                 Discussions["Origin"].iloc[-1]=1
                 Discussions["IP address"].iloc[-1]=postID
         elif (row['Component'] == 'Post created'):
-            if not is_deleted_object(row, 'Post'.lower()):
+            object_id = re.search('has created the ' + "post" + ' with id (.+?) in', row['Event name'])
+            if not is_deleted_object(object_id, "post"):
                 moodle_id = row["MoodleId"]
                 Comments = Comments.append(row, ignore_index=True, sort=False)
                 Comments["Description"].iloc[-1]=moodle_id
                 Comments["Origin"].iloc[-1]=1
 
         elif (row['Component'] == 'Discussion viewed'):
-            if not is_deleted_object(row, 'Discussion'.lower()):
-                postID=re.search('discussion with id (.+?) in the forum', row['Event name']).group(1)
+            object_id = re.search('discussion with id (.+?) in the forum', row['Event name'])
+            if not is_deleted_object(object_id, "discussion"):
+                postID=object_id.group(1)
                 if((PostViewCount['PostID']==postID).any()):
                     ind=np.array(PostViewCount['PostID']==postID).nonzero()[0]
                     PostViewCount.loc[ind,'count']+=1
@@ -77,13 +83,13 @@ def mark_rows(data):
     return Discussions.rename(columns={"IP address": "PostID"}),Comments,PostViewCount
 
 
-Discussions,Comments,PostViewCount=mark_rows(Newlogs)
-Discussions.to_pickle("Discussions.pkl")
-Comments.to_pickle("Comments.pkl")
-PostViewCount.to_pickle("views.pkl")
-#Discussions=pd.read_pickle("Discussions.pkl")
-#Comments=pd.read_pickle("Comments.pkl")
-#PostViewCount=pd.read_pickle("views.pkl")
+#Discussions,Comments,PostViewCount=mark_rows(Newlogs)
+#Discussions.to_pickle("Discussions.pkl")
+#Comments.to_pickle("Comments.pkl")
+#PostViewCount.to_pickle("views.pkl")
+Discussions=pd.read_pickle("Discussions.pkl")
+Comments=pd.read_pickle("Comments.pkl")
+PostViewCount=pd.read_pickle("views.pkl")
 
 def Summarizer(UpdateData):
     sume = np.sum(UpdateData['Origin'])
@@ -158,7 +164,7 @@ def MakeCommentsReport(UsersWithId):
     ChosenStudents = ChosenStudents[["id", "name", "NewPosts", "DiscussionBadge", "Comments", "CommentsBadge"]]
     ChosenStudents.to_csv('data/ChosenStudentsStatusNEW.csv', index=False, encoding='utf-8-sig')
 
-MakeCommentsReport(UsersWithId)
+#MakeCommentsReport(UsersWithId)
 
 
 
@@ -172,20 +178,26 @@ def MatchPostToPerson(data,Discussions):
                 data.at[index,"MoodleId"]=int(0)
             else:
                 data.at[index, "MoodleId"] = int(b)
+        else:
+            print("strange1")
     return data
 
 
 def GetMaxViewsperPerson(data):
     ViewsPerPerson=pd.DataFrame(columns = ['name','id', 'views', 'badge status', "postID"])
     data["MoodleId"]=data["MoodleId"].astype('Int64')
+    data["count"]=data["count"].fillna(0)
+    data["count"]=pd.to_numeric(data["count"])
+
     ChosenStudentList["MoodleId"]=ChosenStudentList["MoodleId"].astype(int)
     for index, row in ChosenStudentList.iterrows():
         ind=row['MoodleId']==data['MoodleId']
         PostID=""
         if (ind.any()):
-            maxViews=np.max(data.loc[ind,'count'].to_numpy())
-            maxIndex=np.where(data.loc[ind,'count'].to_numpy()==maxViews)[0]
-            PostID=data.loc[maxIndex,"PostID"].values[0]
+            maxIndex=data.loc[ind,"count"].idxmax(axis=0)
+            maxViews=data.loc[maxIndex,'count']
+
+            PostID=data.loc[maxIndex,"PostID"]
             PostID=PostID[1:len(PostID)-1]
             badge=''
             if (maxViews>250):
@@ -204,8 +216,9 @@ def GetMaxViewsperPerson(data):
 def MakeViewsReport():
     OldFile=pd.read_csv('data/ViewsOfBadgeGroup.csv')
     OldFile.to_csv('data/ViewsOfBadgeGroupOLD.csv', encoding='utf-8-sig')
-    CountViewsWithPostOwners=MatchPostToPerson(PostViewCount,Discussions)
-    CountViewsWithPostOwners.to_pickle('CountViewsWithPostOwners.pkl')
+    #CountViewsWithPostOwners=MatchPostToPerson(PostViewCount,Discussions)
+    #CountViewsWithPostOwners.to_pickle('CountViewsWithPostOwners.pkl')
+    CountViewsWithPostOwners=pd.read_pickle('CountViewsWithPostOwners.pkl')
     CountViewsPerPerson=GetMaxViewsperPerson(CountViewsWithPostOwners)
     CountViewsPerPerson["MessageLink"] = ""
     for index, row in CountViewsPerPerson.iterrows():
@@ -219,4 +232,3 @@ MakeViewsReport()
 def FindPopularViewsLink(PostViewCount, NumberFfPosts):
     print(PostViewCount.sort_values(["count"], ascending=False).head(NumberFfPosts))
 
-FindPopularViewsLink(PostViewCount,10)
